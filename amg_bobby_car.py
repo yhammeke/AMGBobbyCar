@@ -28,8 +28,8 @@ def startEngineAndRace():
 def startBlueTractor():
     print('StartBlueTractor')
     #os.system('omxplayer -o alsa $(youtube-dl -g -f 140 https://www.youtube.com/watch?v=LbOve_UZZ54)')
-    pygame.mixer.music.load("music/Traktor.mp3")
-    pygame.mixer.music.set_volume(0.2)
+    pygame.mixer.music.load("music/FuenfkleineFische.mp3")
+    pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play()
 
 def startEngineOnly():
