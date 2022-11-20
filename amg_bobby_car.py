@@ -9,6 +9,9 @@ import pygame
 from gpiozero import Button, PWMLED
 from time import sleep
 
+# Package for random song selection
+import random
+
 # import lib for file list creation
 import glob
 
@@ -16,7 +19,8 @@ import glob
 import logging
  
 # Create and configure logger
-logging.basicConfig(filename="/home/pi/newfile.log",
+# TODO: think about creating one loggin file per day.
+logging.basicConfig(filename="/home/pi/AMGBobbyCar/log_file.log",
                     format='%(asctime)s %(message)s',
                     filemode='w')
  
@@ -53,13 +57,19 @@ def startBlueTractor():
     searchpath = os.path.join(musicpath, "*.mp3")
     print(searchpath)
     songs = glob.glob(searchpath)
-    print(songs)
+    # How many songs are available in the music folder
+    print(len(songs))
+    #print(songs)
     #os.system('omxplayer -o alsa $(youtube-dl -g -f 140 https://www.youtube.com/watch?v=LbOve_UZZ54)')
     try:
-        sonName = pygame.mixer.music.load(os.path.join(musicpath, "Traktor.mp3"))
+        #sonName = pygame.mixer.music.load(os.path.join(musicpath, "Traktor.mp3"))
+        #random.randrange(0,len(songs))
+        sonName = pygame.mixer.music.load(os.path.join(filepath, songs[random.randrange(0,len(songs))]))
     except Exception as Argument:
         logging.exception("Error occurred while loading mp3 file")
-    pygame.mixer.music.set_volume(0.2)
+    
+    pygame.mixer.music.set_volume(0.3)
+    
     try:
         pygame.mixer.music.play()
     except Exception as Argument:
