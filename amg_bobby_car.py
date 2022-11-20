@@ -48,33 +48,42 @@ def startEngineAndRace():
     pygame.mixer.music.set_volume(0.3)
     pygame.mixer.music.play()
     
-def startBlueTractor():
-    print('StartBlueTractor')
-    filepath = os.path.dirname(__file__)
-    print(filepath)
-    musicpath = os.path.join(filepath, "music")
-    print(musicpath)
-    searchpath = os.path.join(musicpath, "*.mp3")
-    print(searchpath)
-    songs = glob.glob(searchpath)
-    # How many songs are available in the music folder
-    print(len(songs))
-    #print(songs)
-    #os.system('omxplayer -o alsa $(youtube-dl -g -f 140 https://www.youtube.com/watch?v=LbOve_UZZ54)')
+def startMusicMode():
+    print('startMusicMode')
+    
+    startRandomSong()
+    
+    # Control LEDs
+    led_front_left.blink(0,0,1,1)
+    sleep(1)
+    led_front_right.blink(0,0,1,1)
+    sleep(0.5)
+    led_rear.blink(0,0,1,1)
+    
+
+def startRandomSong():
+    
+    # Select random song from the list
+    randomSong = random.randrange(0,len(songs))
+    print('Random song number:', randomSong)
+    print('Random song name:', songs[randomSong])
+    # Load random song to the pygame mixer
     try:
-        #sonName = pygame.mixer.music.load(os.path.join(musicpath, "Traktor.mp3"))
-        #random.randrange(0,len(songs))
-        sonName = pygame.mixer.music.load(os.path.join(filepath, songs[random.randrange(0,len(songs))]))
+        pygame.mixer.music.load(os.path.join(filepath, songs[randomSong]))
     except Exception as Argument:
         logging.exception("Error occurred while loading mp3 file")
     
+    # Define the volume
     pygame.mixer.music.set_volume(0.3)
     
+    # Start playing the song
     try:
         pygame.mixer.music.play()
     except Exception as Argument:
         logging.exception("Error occurred while starting the song")
-        
+    print("Music is now playing...")
+    pygame.mixer.music.set_endevent(END_OF_SONG)
+    
 def startEngineOnly():
     print('Engine start and run')
     pygame.mixer.music.load("S65_Engine_Start_and_Run.wav")
@@ -87,6 +96,7 @@ def stopEngine():
     #os.system('killall "omxplayer.bin"')
 
 
+# Turn all LEDs off at startup.
 
 led_white.off()
 led_blue.off()
@@ -102,52 +112,64 @@ led_rear.off()
 #led_blue.blink(0.05,0.05,0,0)
 #led_red.blink(0.05,0.05,0,0)
 
-#led_blue.blink(0,0,1,1)
-#sleep(1)
 
 # Let the RED LED blink all the time.
 led_red.blink(0,0,1,1)
-#sleep(1)
-#led_front_left.blink(0,0,1,1)
-#led_front_left.on()
-#led_front_right.on()
-#led_rear.on()
-#led_front_right.blink(0,0,1,1)
-#led_front_right.blink(0.1,0.1,1,1)
 
 # Initialize pygame
 pygame.init()
 
-    #led_blue.blink(0.05,0.1,0,0,4,False)
-    #led_red.blink(0.05,0.1,0,0,4,False)
-    #led_blue.blink(0.1,0.1,0,0,4,False)
-    #led_red.blink(0.1,0.1,0,0,4,False)
-    #sleep(1)
+# Define the event for the end of the song
+END_OF_SONG = pygame.USEREVENT+1
+
+# Define the path to the music folder
+filepath = os.path.dirname(__file__)
+musicpath = os.path.join(filepath, "music")
+print(musicpath)
+searchpath = os.path.join(musicpath, "*.mp3")
+print(searchpath)
+songs = glob.glob(searchpath)
+# How many songs are available in the music folder
+print(len(songs), 'songs have been found.')
+
+# Define the vehicle status
+vehicleMode = "OFF"
 
 while True:    
     if blueButton.is_pressed:
-        if led_front_left.is_lit:
+        if vehicleMode == "OFF":
+            # Start music mode
+            startMusicMode()
+            sleep(0.5)
+            led_red.blink(0,0,1,1)
+            sleep(1)
+            led_blue.blink(0,0,1,1)
+            #led_blue.on()
+            #led_front_left.blink(1,0,1,0,1)
+            #led_front_right.blink(1,0,1,0,1)
+            #led_rear.blink(1,0,1,0,1)
+            #sleep(1)
+            #led_front_left.on()
+            #led_front_right.on()
+            #led_rear.on()
+            vehicleMode = "MUSIC"
+        elif vehicleMode == "MUSIC":
             stopEngine()
             led_front_left.blink(0,1,0,1,1)
             led_front_right.blink(0,1,0,1,1)
             led_rear.blink(0,1,0,1,1)
             sleep(0.5)
             led_blue.off()
-        else:
-            startBlueTractor()
-            sleep(0.5)
-            led_blue.on()
-            led_front_left.blink(1,0,1,0,1)
-            led_front_right.blink(1,0,1,0,1)
-            led_rear.blink(1,0,1,0,1)
-            sleep(1)
-            led_front_left.on()
-            led_front_right.on()
-            led_rear.on()
+            vehicleMode = "OFF"
         sleep(0.2)
     if redButton.is_pressed:
         startEngineOnly()
         sleep(5)
+    
+    for event in pygame.event.get():
+        if event.type == END_OF_SONG:
+            print('End of song')
+            startRandomSong()
 
 
         
