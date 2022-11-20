@@ -1,11 +1,30 @@
 #!/usr/bin/python
 #from omxplayer import OMXPlayer
 import os
+import os.path
+print(os.path.dirname(__file__))
 # Package for sounds and music
 import pygame
 # Package for Buttons and Leds
 from gpiozero import Button, PWMLED
 from time import sleep
+
+# import lib for file list creation
+import glob
+
+# importing module
+import logging
+ 
+# Create and configure logger
+logging.basicConfig(filename="/home/pi/newfile.log",
+                    format='%(asctime)s %(message)s',
+                    filemode='w')
+ 
+# Creating an object
+logger = logging.getLogger()
+ 
+# Setting the threshold of logger to DEBUG
+logger.setLevel(logging.DEBUG)
     
 
 blueButton = Button(10)
@@ -27,11 +46,25 @@ def startEngineAndRace():
     
 def startBlueTractor():
     print('StartBlueTractor')
+    filepath = os.path.dirname(__file__)
+    print(filepath)
+    musicpath = os.path.join(filepath, "music")
+    print(musicpath)
+    searchpath = os.path.join(musicpath, "*.mp3")
+    print(searchpath)
+    songs = glob.glob(searchpath)
+    print(songs)
     #os.system('omxplayer -o alsa $(youtube-dl -g -f 140 https://www.youtube.com/watch?v=LbOve_UZZ54)')
-    pygame.mixer.music.load("music/FuenfkleineFische.mp3")
-    pygame.mixer.music.set_volume(0.5)
-    pygame.mixer.music.play()
-
+    try:
+        sonName = pygame.mixer.music.load(os.path.join(musicpath, "Traktor.mp3"))
+    except Exception as Argument:
+        logging.exception("Error occurred while loading mp3 file")
+    pygame.mixer.music.set_volume(0.2)
+    try:
+        pygame.mixer.music.play()
+    except Exception as Argument:
+        logging.exception("Error occurred while starting the song")
+        
 def startEngineOnly():
     print('Engine start and run')
     pygame.mixer.music.load("S65_Engine_Start_and_Run.wav")

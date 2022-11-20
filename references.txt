@@ -1,0 +1,30 @@
+How to implement the Power On Button
+https://www.instructables.com/Raspberry-Pi-Power-Button/
+
+
+https://www.geeksforgeeks.org/python-call-function-from-another-function/
+
+https://www.raspberrypi.com/documentation/computers/os.html#voltages
+
+https://magpi.raspberrypi.com/articles/voice-control-raspberry-pi
+
+https://www.recantha.co.uk/blog/?p=14065
+
+https://gpiozero.readthedocs.io/en/v1.2.0/api_output.html#led
+
+https://www.w3schools.com/python/gloss_python_else.asp
+
+https://www.raspberrypistarterkits.com/guide/raspberry-pi-default-login-change/
+
+https://www.raspberrypi.com/documentation/computers/remote-access.html
+
+https://www.raspberrypi.com/software/
+
+https://www.raspberrypi.com/software/operating-systems/
+
+How to save credentials for GitHub (token) at Raspbery Pi
+https://stackoverflow.com/questions/35942754/how-can-i-save-username-and-password-in-git#35942890
+
+How to start the Python Script at Startup
+https://www.makeuseof.com/how-to-run-a-raspberry-pi-program-script-at-startup/
+
