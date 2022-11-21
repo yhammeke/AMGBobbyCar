@@ -33,6 +33,8 @@ logger.setLevel(logging.DEBUG)
 
 blueButton = Button(10)
 redButton = Button(15)
+leftSteeringWheelButton = Button(26)
+rightSteeringWheelButton = Button(20)
 
 led_white = PWMLED(2)
 led_blue = PWMLED(25)
