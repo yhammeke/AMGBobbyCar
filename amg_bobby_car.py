@@ -30,11 +30,11 @@ logger = logging.getLogger()
 # Setting the threshold of logger to DEBUG
 logger.setLevel(logging.DEBUG)
     
-
+# Define AMG Bobby Car Buttons
 blueButton = Button(10)
 redButton = Button(15)
-leftSteeringWheelButton = Button(26)
-rightSteeringWheelButton = Button(20)
+leftSteeringWheelButton = Button(20)
+rightSteeringWheelButton = Button(26)
 
 led_white = PWMLED(2)
 led_blue = PWMLED(25)
@@ -170,10 +170,14 @@ while True:
     
     if leftSteeringWheelButton.is_pressed:
         print('Left Button is pressed')
+        startRandomSong()
+        sleep(1)
     
     
     if rightSteeringWheelButton.is_pressed:
         print('Right Button is pressed')
+        startRandomSong()
+        sleep(1)
     
     for event in pygame.event.get():
         if event.type == END_OF_SONG:
