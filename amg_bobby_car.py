@@ -168,6 +168,13 @@ while True:
         startEngineOnly()
         sleep(5)
     
+    if leftSteeringWheelButton.is_pressed:
+        print('Left Button is pressed')
+    
+    
+    if rightSteeringWheelButton.is_pressed:
+        print('Right Button is pressed')
+    
     for event in pygame.event.get():
         if event.type == END_OF_SONG:
             print('End of song')
