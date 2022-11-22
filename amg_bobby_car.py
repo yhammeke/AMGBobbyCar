@@ -54,7 +54,7 @@ def startEngineAndRace():
     
 def startMusicMode():
     print('startMusicMode')
-    startRandomSong()
+    #startRandomSong()
     # Control LEDs
     led_front_left.blink(0,0,1,1)
     sleep(1)
@@ -208,6 +208,12 @@ while True:
             if AMGBobbyCarMode == 1:                
                 # Start music mode
                 startMusicMode()
+                # Select random song from the list
+                randomSong = random.randrange(0,len(songs))
+                # Save the previous song before the next song selection
+                previousSong = randomSong
+                startTheSong(randomSong)
+                print('Previous Song:', previousSong)
                 sleep(0.5)
                 led_red.blink(0,0,1,1)
                 sleep(1)
