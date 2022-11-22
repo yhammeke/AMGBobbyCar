@@ -17,6 +17,8 @@ import glob
 
 # importing module
 import logging
+
+from enum import Enum
  
 # Create and configure logger
 # TODO: think about creating one loggin file per day.
@@ -86,26 +88,38 @@ def startRandomSong():
     print("Music is now playing...")
     pygame.mixer.music.set_endevent(END_OF_SONG)
     
-def startEngineOnly():
-    print('Engine start and run')
-    pygame.mixer.music.load("S65_Engine_Start_and_Run.wav")
+def announceOFFMode():
+    print('Announce OFF Mode')
+    try:
+        pygame.mixer.music.load(os.path.join(filepath, "musicbox_announce_1.mp3"))
+    except Exception as Argument:
+        logging.exception("Error occurred while loading mp3 file")
     pygame.mixer.music.set_volume(0.3)
     pygame.mixer.music.play()
 
-def stopEngine():
+def stopTheMusic():
     print('Engine stop')
     pygame.mixer.music.stop()
     #os.system('killall "omxplayer.bin"')
 
+def fadeOutTheLights():
+    led_front_left.blink(0,1,0,1,1)
+    led_front_right.blink(0,1,0,1,1)
+    led_rear.blink(0,1,0,1,1)
+    sleep(0.5)
+
+def turnOffTheLights():
+    led_front_left.off()
+    led_front_right.off()
+    led_rear.off()
+    sleep(0.5)
 
 # Turn all LEDs off at startup.
 
 led_white.off()
 led_blue.off()
 led_red.off()
-led_front_left.off()
-led_front_right.off()
-led_rear.off()
+turnOffTheLights()
 
 #led_white.blink(0.1,0.1,1,1)
 #led_red.blink(0.05,0.05,0,0,None,False)
@@ -128,6 +142,8 @@ END_OF_SONG = pygame.USEREVENT+1
 filepath = os.path.dirname(__file__)
 musicpath = os.path.join(filepath, "music")
 print(musicpath)
+soundsPath = os.path.join(filepath, "sounds")
+print(soundsPath)
 searchpath = os.path.join(musicpath, "*.mp3")
 print(searchpath)
 songs = glob.glob(searchpath)
@@ -136,10 +152,17 @@ print(len(songs), 'songs have been found.')
 
 # Define the vehicle status
 vehicleMode = "OFF"
+class VehicleState(Enum):
+    OFF = 0
+    MUSIC = 1
+    CAR = 2
+
+AMGBobbyCarState = VehicleState.OFF
 
 while True:    
+    
     if blueButton.is_pressed:
-        if vehicleMode == "OFF":
+        if AMGBobbyCarState == VehicleState.OFF:
             # Start music mode
             startMusicMode()
             sleep(0.5)
@@ -154,19 +177,26 @@ while True:
             #led_front_left.on()
             #led_front_right.on()
             #led_rear.on()
-            vehicleMode = "MUSIC"
-        elif vehicleMode == "MUSIC":
-            stopEngine()
-            led_front_left.blink(0,1,0,1,1)
-            led_front_right.blink(0,1,0,1,1)
-            led_rear.blink(0,1,0,1,1)
-            sleep(0.5)
+            AMGBobbyCarState = VehicleState.MUSIC
+        elif AMGBobbyCarState == VehicleState.MUSIC:
+            stopTheMusic()
+            fadeOutTheLights()
             led_blue.off()
             vehicleMode = "OFF"
         sleep(0.2)
+        
+    
+    match AMGBobbyCarState:
+        case VehicleState.OFF
+            fadeOutTheLights()
+            stopTheMusic()
+            announceOFFMode()
+            
+            
     if redButton.is_pressed:
-        startEngineOnly()
-        sleep(5)
+        # Imcrement the Vehicle State (Switch the mode of the AMG Bobby Car)
+        AMGBobbyCarState = VehicleState(AMGBobbyCarState + 1)
+        sleep(3)
     
     if leftSteeringWheelButton.is_pressed:
         print('Left Button is pressed')
@@ -179,6 +209,7 @@ while True:
         startRandomSong()
         sleep(1)
     
+    # Wait for the END of the song.
     for event in pygame.event.get():
         if event.type == END_OF_SONG:
             print('End of song')
