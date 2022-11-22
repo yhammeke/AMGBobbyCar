@@ -69,11 +69,32 @@ def startRandomSong():
     
     # Select random song from the list
     randomSong = random.randrange(0,len(songs))
+    previousSong = randomSong
     print('Random song number:', randomSong)
     print('Random song name:', songs[randomSong])
     # Load random song to the pygame mixer
     try:
         pygame.mixer.music.load(os.path.join(filepath, songs[randomSong]))
+    except Exception as Argument:
+        logging.exception("Error occurred while loading mp3 file")
+    
+    # Define the volume
+    pygame.mixer.music.set_volume(0.3)
+    
+    # Start playing the song
+    try:
+        pygame.mixer.music.play()
+    except Exception as Argument:
+        logging.exception("Error occurred while starting the song")
+    print("Music is now playing...")
+    pygame.mixer.music.set_endevent(END_OF_SONG)
+
+def startTheSong(song):
+    print('Selected Song number:', song)
+    print('Selected Song name:', songs[song])
+    # Load random song to the pygame mixer
+    try:
+        pygame.mixer.music.load(os.path.join(filepath, songs[song]))
     except Exception as Argument:
         logging.exception("Error occurred while loading mp3 file")
     
@@ -168,6 +189,8 @@ songs = glob.glob(searchpath)
 # How many songs are available in the music folder
 print(len(songs), 'songs have been found.')
 
+previousSong = 0
+
 # Define the vehicle status
 class VehicleMode(Enum):
     OFF = 0
@@ -227,13 +250,15 @@ while True:
     
     if leftSteeringWheelButton.is_pressed:
         print('Left Button is pressed')
-        startRandomSong()
+        if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
+            startTheSong(previousSong)
         sleep(1)
     
     
     if rightSteeringWheelButton.is_pressed:
         print('Right Button is pressed')
-        startRandomSong()
+        if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
+            startRandomSong()
         sleep(1)
     
     # Wait for the END of the song.
