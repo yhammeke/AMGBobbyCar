@@ -54,9 +54,7 @@ def startEngineAndRace():
     
 def startMusicMode():
     print('startMusicMode')
-    
     startRandomSong()
-    
     # Control LEDs
     led_front_left.blink(0,0,1,1)
     sleep(1)
@@ -189,6 +187,7 @@ songs = glob.glob(searchpath)
 # How many songs are available in the music folder
 print(len(songs), 'songs have been found.')
 
+previousSong = 0
 
 # Define the vehicle status
 class VehicleMode(Enum):
@@ -250,6 +249,8 @@ while True:
     if leftSteeringWheelButton.is_pressed:
         print('Left Button is pressed')
         if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
+            # Select random song from the list
+            # randomSong = random.randrange(0,len(songs))
             startTheSong(previousSong)
             print('Previous Song:', previousSong)
         sleep(1)
@@ -258,7 +259,10 @@ while True:
     if rightSteeringWheelButton.is_pressed:
         print('Right Button is pressed')
         if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
-            startRandomSong()
+            # Select random song from the list
+            randomSong = random.randrange(0,len(songs))
+            previousSong = randomSong
+            startTheSong(randomSong)
             print('Previous Song:', previousSong)
         sleep(1)
     
