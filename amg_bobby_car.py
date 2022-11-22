@@ -91,14 +91,14 @@ def startRandomSong():
 def announceOFFMode():
     print('Announce OFF Mode')
     try:
-        pygame.mixer.music.load(os.path.join(soundsPath, "musicbox_announce_1.mp3"))
+        pygame.mixer.music.load(os.path.join(soundsPath, "offmode_announce_1.mp3"))
     except Exception as Argument:
         logging.exception("Error occurred while loading mp3 file")
     pygame.mixer.music.set_volume(0.7)
     pygame.mixer.music.play()
 
 def announceMusicMode():
-    print('Announce OFF Mode')
+    print('Announce Music Mode')
     try:
         pygame.mixer.music.load(os.path.join(soundsPath, "musicbox_announce_1.mp3"))
     except Exception as Argument:
@@ -107,9 +107,9 @@ def announceMusicMode():
     pygame.mixer.music.play()
 
 def announceCarMode():
-    print('Announce OFF Mode')
+    print('Announce Car Mode')
     try:
-        pygame.mixer.music.load(os.path.join(soundsPath, "musicbox_announce_1.mp3"))
+        pygame.mixer.music.load(os.path.join(soundsPath, "carmode_announce_1.mp3"))
     except Exception as Argument:
         logging.exception("Error occurred while loading mp3 file")
     pygame.mixer.music.set_volume(0.7)
@@ -178,12 +178,12 @@ AMGBobbyCarMode = 1
 # Define the vehicle mode
 # 0 --> OFF
 # 1 --> ON
-AMGBobbyCarState = 0
+AMGBobbyCarIgnitionState = 0
 
 while True:    
     
     if blueButton.is_pressed:
-        if AMGBobbyCarState == 0:
+        if AMGBobbyCarIgnitionState == 0:
             if AMGBobbyCarMode == 1:                
                 # Start music mode
                 startMusicMode()
@@ -191,12 +191,12 @@ while True:
                 led_red.blink(0,0,1,1)
                 sleep(1)
                 led_blue.blink(0,0,1,1)
-            AMGBobbyCarState = 1
-        elif AMGBobbyCarState == 1:
+            AMGBobbyCarIgnitionState = 1
+        elif AMGBobbyCarIgnitionState == 1:
             stopTheMusic()
             fadeOutTheLights()
             led_blue.off()
-            AMGBobbyCarState = 0
+            AMGBobbyCarIgnitionState = 0
         sleep(0.2)
         
             
@@ -240,7 +240,9 @@ while True:
     for event in pygame.event.get():
         if event.type == END_OF_SONG:
             print('End of song')
-            startRandomSong()
+            # Play the next random song only in music mode.
+            if AMGBobbyCarMode == 1 && AMGBobbyCarIgnitionState == 1:
+                startRandomSong()
 
 
         
