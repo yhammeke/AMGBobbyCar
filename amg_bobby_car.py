@@ -157,7 +157,7 @@ class VehicleState(Enum):
     MUSIC = 1
     CAR = 2
 
-AMGBobbyCarState = VehicleState.OFF
+AMGBobbyCarState = VehicleState.MUSIC
 
 while True:    
     
@@ -195,6 +195,7 @@ while True:
     if redButton.is_pressed:
         # Imcrement the Vehicle State (Switch the mode of the AMG Bobby Car)
         AMGBobbyCarState = VehicleState(AMGBobbyCarState + 1)
+        print("Red Button is pressed")
         sleep(3)
     
     if leftSteeringWheelButton.is_pressed:
