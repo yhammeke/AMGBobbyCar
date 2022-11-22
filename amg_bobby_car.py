@@ -259,9 +259,10 @@ while True:
     if rightSteeringWheelButton.is_pressed:
         print('Right Button is pressed')
         if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
+            # Save the previous song before the next song selection
+            previousSong = randomSong
             # Select random song from the list
             randomSong = random.randrange(0,len(songs))
-            previousSong = randomSong
             startTheSong(randomSong)
             print('Previous Song:', previousSong)
         sleep(1)
