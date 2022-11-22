@@ -186,11 +186,10 @@ while True:
         sleep(0.2)
         
     
-    match AMGBobbyCarState:
-        case VehicleState.OFF
-            fadeOutTheLights()
-            stopTheMusic()
-            announceOFFMode()
+    if  AMGBobbyCarState = VehicleState.OFF:
+        fadeOutTheLights()
+        stopTheMusic()
+        announceOFFMode()
             
             
     if redButton.is_pressed:
