@@ -97,6 +97,24 @@ def announceOFFMode():
     pygame.mixer.music.set_volume(0.3)
     pygame.mixer.music.play()
 
+def announceMusicMode():
+    print('Announce OFF Mode')
+    try:
+        pygame.mixer.music.load(os.path.join(filepath, "musicbox_announce_1.mp3"))
+    except Exception as Argument:
+        logging.exception("Error occurred while loading mp3 file")
+    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.play()
+
+def announceCarMode():
+    print('Announce OFF Mode')
+    try:
+        pygame.mixer.music.load(os.path.join(filepath, "musicbox_announce_1.mp3"))
+    except Exception as Argument:
+        logging.exception("Error occurred while loading mp3 file")
+    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.play()
+
 def stopTheMusic():
     print('Engine stop')
     pygame.mixer.music.stop()
@@ -151,18 +169,21 @@ songs = glob.glob(searchpath)
 print(len(songs), 'songs have been found.')
 
 # Define the vehicle status
-vehicleMode = "OFF"
-class VehicleState(Enum):
+class VehicleMode(Enum):
     OFF = 0
     MUSIC = 1
     CAR = 2
+AMGBobbyCarMode = 1
 
-AMGBobbyCarState = VehicleState.MUSIC
+# Define the vehicle mode
+# 0 --> OFF
+# 1 --> ON
+AMGBobbyCarState = 0
 
 while True:    
     
     if blueButton.is_pressed:
-        if AMGBobbyCarState == VehicleState.OFF:
+        if AMGBobbyCarState == 0:
             # Start music mode
             startMusicMode()
             sleep(0.5)
@@ -177,24 +198,36 @@ while True:
             #led_front_left.on()
             #led_front_right.on()
             #led_rear.on()
-            AMGBobbyCarState = VehicleState.MUSIC
-        elif AMGBobbyCarState == VehicleState.MUSIC:
+            AMGBobbyCarState = 1
+        elif AMGBobbyCarState == 1:
             stopTheMusic()
             fadeOutTheLights()
             led_blue.off()
-            vehicleMode = "OFF"
+            AMGBobbyCarState = 0
         sleep(0.2)
         
     
-    if  AMGBobbyCarState == VehicleState.OFF:
+    if  AMGBobbyCarMode == 0:
         fadeOutTheLights()
         stopTheMusic()
         announceOFFMode()
-            
+    elif AMGBobbyCarMode == 1:
+        fadeOutTheLights()
+        stopTheMusic()
+        announceMusicMode()
+    elif AMGBobbyCarMode == 2:
+        fadeOutTheLights()
+        stopTheMusic()
+        announceCarMode()
+    else:
+        print("Incorrect AMGBobbyCarMode")
             
     if redButton.is_pressed:
         # Imcrement the Vehicle State (Switch the mode of the AMG Bobby Car)
-        AMGBobbyCarState = VehicleState(AMGBobbyCarState + 1)
+        if AMGBobbyCarMode == 2:
+            AMGBobbyCarMode = 0
+        else:
+            AMGBobbyCarMode = AMGBobbyCarMode + 1
         print("Red Button is pressed")
         sleep(3)
     
