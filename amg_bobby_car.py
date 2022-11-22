@@ -46,6 +46,8 @@ led_front_right = PWMLED(17)
 led_front_left = PWMLED(18)
 led_rear = PWMLED(27)
 
+previousSong = 0
+
 def startEngineAndRace():
     print('Engine run and race')
     pygame.mixer.music.load("AMG-65_race.wav")
@@ -189,7 +191,6 @@ songs = glob.glob(searchpath)
 # How many songs are available in the music folder
 print(len(songs), 'songs have been found.')
 
-previousSong = 0
 
 # Define the vehicle status
 class VehicleMode(Enum):
@@ -252,7 +253,7 @@ while True:
         print('Left Button is pressed')
         if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
             startTheSong(previousSong)
-        print('Previous Song:', previousSong)
+            print('Previous Song:', previousSong)
         sleep(1)
     
     
@@ -260,7 +261,7 @@ while True:
         print('Right Button is pressed')
         if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
             startRandomSong()
-        print('Previous Song:', previousSong)
+            print('Previous Song:', previousSong)
         sleep(1)
     
     # Wait for the END of the song.
