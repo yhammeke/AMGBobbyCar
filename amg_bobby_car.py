@@ -184,21 +184,13 @@ while True:
     
     if blueButton.is_pressed:
         if AMGBobbyCarState == 0:
-            # Start music mode
-            #startMusicMode()
-            announceMusicMode()
-            sleep(0.5)
-            led_red.blink(0,0,1,1)
-            sleep(1)
-            led_blue.blink(0,0,1,1)
-            #led_blue.on()
-            #led_front_left.blink(1,0,1,0,1)
-            #led_front_right.blink(1,0,1,0,1)
-            #led_rear.blink(1,0,1,0,1)
-            #sleep(1)
-            #led_front_left.on()
-            #led_front_right.on()
-            #led_rear.on()
+            if AMGBobbyCarMode == 1:                
+                # Start music mode
+                startMusicMode()
+                sleep(0.5)
+                led_red.blink(0,0,1,1)
+                sleep(1)
+                led_blue.blink(0,0,1,1)
             AMGBobbyCarState = 1
         elif AMGBobbyCarState == 1:
             stopTheMusic()
@@ -207,21 +199,6 @@ while True:
             AMGBobbyCarState = 0
         sleep(0.2)
         
-    
- #   if  AMGBobbyCarMode == 0:
- #       fadeOutTheLights()
- #       stopTheMusic()
- #       announceOFFMode()
- #   elif AMGBobbyCarMode == 1:
- #       fadeOutTheLights()
- #       stopTheMusic()
- #       announceMusicMode()
- #   elif AMGBobbyCarMode == 2:
- #       fadeOutTheLights()
- #       stopTheMusic()
- #       announceCarMode()
- #   else:
- #       print("Incorrect AMGBobbyCarMode")
             
     if redButton.is_pressed:
         # Imcrement the Vehicle State (Switch the mode of the AMG Bobby Car)
@@ -230,6 +207,22 @@ while True:
         else:
             AMGBobbyCarMode = AMGBobbyCarMode + 1
         print("Red Button is pressed")
+        
+        if  AMGBobbyCarMode == 0:
+            if led_rear.is_lit:
+                fadeOutTheLights()
+            announceOFFMode()
+        elif AMGBobbyCarMode == 1:
+            if led_rear.is_lit:
+                fadeOutTheLights()
+            announceMusicMode()
+        elif AMGBobbyCarMode == 2:
+            if led_rear.is_lit:
+                fadeOutTheLights()
+            announceCarMode()
+        else:
+            print("Incorrect AMGBobbyCarMode")
+        
         sleep(3)
     
     if leftSteeringWheelButton.is_pressed:
