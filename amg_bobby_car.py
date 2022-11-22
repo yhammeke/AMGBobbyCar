@@ -186,7 +186,7 @@ while True:
         sleep(0.2)
         
     
-    if  AMGBobbyCarState = VehicleState.OFF:
+    if  AMGBobbyCarState == VehicleState.OFF:
         fadeOutTheLights()
         stopTheMusic()
         announceOFFMode()
