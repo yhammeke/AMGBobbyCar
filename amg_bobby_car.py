@@ -46,8 +46,6 @@ led_front_right = PWMLED(17)
 led_front_left = PWMLED(18)
 led_rear = PWMLED(27)
 
-previousSong = 0
-
 def startEngineAndRace():
     print('Engine run and race')
     pygame.mixer.music.load("AMG-65_race.wav")
