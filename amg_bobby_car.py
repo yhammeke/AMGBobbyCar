@@ -252,6 +252,7 @@ while True:
         print('Left Button is pressed')
         if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
             startTheSong(previousSong)
+            print('Previous Song:', previousSong)
         sleep(1)
     
     
@@ -259,6 +260,7 @@ while True:
         print('Right Button is pressed')
         if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
             startRandomSong()
+            print('Previous Song:', previousSong)
         sleep(1)
     
     # Wait for the END of the song.
