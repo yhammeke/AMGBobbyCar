@@ -241,7 +241,7 @@ while True:
         if event.type == END_OF_SONG:
             print('End of song')
             # Play the next random song only in music mode.
-            if AMGBobbyCarMode == 1 && AMGBobbyCarIgnitionState == 1:
+            if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
                 startRandomSong()
 
 
