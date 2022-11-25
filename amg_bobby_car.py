@@ -154,7 +154,7 @@ def setVehicleLightsToOff():
 def setVehicleLightsToPoliceMode():
     led_front_left.blink(0.05,0.05,0,0)
     sleep(0.05)
-    led_front_left.blink(0.05,0.05,0,0)
+    led_front_right.blink(0.05,0.05,0,0)
     led_rear.blink(0.05,0.05,0,0)
 
 def setICLightsToPoliceMode():
@@ -174,7 +174,7 @@ def setIgnitionToOff():
 #blink(on_time=1, off_time=1, n=None, background=True)
 def setHeartBeatToOn():
     led_red.blink(0.05,3,0,0)
-    sleep(0.1)
+    sleep(0.05)
     led_blue.blink(0.05,3,0,0)
 
 # Turn all LEDs off at startup.
