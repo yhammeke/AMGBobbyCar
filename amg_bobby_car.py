@@ -158,7 +158,8 @@ def setVehicleLightsToPoliceMode():
     led_rear.blink(0.05,0.05,0,0)
 
 def setICLightsToPoliceMode():
-    
+    led_blue.blink(0.05,0.05,0,0)
+    led_red.blink(0.05,0.05,0,0)
 
 def setICLightsToOff():
     led_blue.off()
@@ -245,7 +246,7 @@ while True:
                 led_blue.blink(0,0,1,1)
             elif AMGBobbyCarMode == 2:
                 setVehicleLightsToPoliceMode()
-                
+                setICLightsToPoliceMode()
             AMGBobbyCarIgnitionState = 1
         elif AMGBobbyCarIgnitionState == 1:
             setIgnitionToOff()
