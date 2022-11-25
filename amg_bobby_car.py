@@ -172,6 +172,7 @@ def setIgnitionToOff():
         setVehicleLightsToOff()
     setICLightsToOff()
     AMGBobbyCarIgnitionState = 0
+    print("Ignition State at setIgnitionOff", AMGBobbyCarIgnitionState)
     setHeartBeatToOn()
     
 
