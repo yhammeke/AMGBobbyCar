@@ -166,11 +166,11 @@ def setICLightsToOff():
 
 def setIgnitionToOff():
     stopTheMusic()
+    setICLightsToOff()
     if led_rear.is_lit:
         fadeOutTheLights()
     else:
         setVehicleLightsToOff()
-    setICLightsToOff()
     print("Ignition State at setIgnitionOff", AMGBobbyCarIgnitionState)
     setHeartBeatToOn()
     
@@ -184,13 +184,6 @@ def setHeartBeatToOn():
 # Turn all LEDs off at startup.
 setVehicleLightsToOff()
 setICLightsToOff()
-
-#led_white.blink(0.1,0.1,1,1)
-#led_red.blink(0.05,0.05,0,0,None,False)
-#led_blue.blink(0.05,0.05,0,0)
-#led_blue.blink(0.1,0.1,1,1)
-#led_blue.blink(0.05,0.05,0,0)
-#led_red.blink(0.05,0.05,0,0)
 
 
 # Let the RED LED blink all the time.
@@ -300,6 +293,11 @@ while True:
             # randomSong = random.randrange(0,len(songs))
             startTheSong(previousSong)
             print('Previous Song:', previousSong)
+        elif AMGBobbyCarMode == 2 and AMGBobbyCarIgnitionState == 1:
+            # Play the sirene sound.
+            try:
+                sirene = pygame.mixer.Sound(os.path.join(filepath, 'sounds/sirene_part1.mp3'))
+            leftSteeringWheelButton.when_pressed = pygame.mixer.Sound.play(sirene)
         sleep(1)
     
     
