@@ -256,7 +256,7 @@ while True:
                 setICLightsToPoliceMode()
             AMGBobbyCarIgnitionState = 1
         elif AMGBobbyCarIgnitionState == 1:
-            setIgnitionToOff()
+            #setIgnitionToOff()
         sleep(0.2)
         
     
