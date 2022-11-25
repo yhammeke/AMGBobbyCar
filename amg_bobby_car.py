@@ -137,7 +137,6 @@ def announceCarMode():
 def stopTheMusic():
     print('Engine stop')
     pygame.mixer.music.stop()
-    #os.system('killall "omxplayer.bin"')
 
 def fadeOutTheLights():
     led_front_left.blink(0,1,0,1,1)
@@ -152,14 +151,14 @@ def setVehicleLightsToOff():
     sleep(0.5)
 
 def setVehicleLightsToPoliceMode():
-    led_front_left.blink(0.05,0.05,0,0)
+    led_front_left.blink(0.1,0.1,0,0)
     sleep(0.05)
-    led_front_right.blink(0.05,0.05,0,0)
-    led_rear.blink(0.05,0.05,0,0)
+    led_front_right.blink(0.1,0.1,0,0)
+    led_rear.blink(0.1,0.1,0,0)
 
 def setICLightsToPoliceMode():
-    led_blue.blink(0.05,0.05,0,0)
-    led_red.blink(0.05,0.05,0,0)
+    led_blue.blink(0.1,0.1,0,0)
+    led_red.blink(0.1,0.1,0,0)
 
 def setICLightsToOff():
     led_blue.off()
@@ -170,6 +169,8 @@ def setIgnitionToOff():
     fadeOutTheLights()
     setICLightsToOff()
     AMGBobbyCarIgnitionState = 0
+    setHeartBeatToOn()
+    
 
 #blink(on_time=1, off_time=1, n=None, background=True)
 def setHeartBeatToOn():
