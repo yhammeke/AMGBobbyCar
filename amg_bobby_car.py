@@ -297,7 +297,7 @@ while True:
             # Play the sirene sound.
             try:
                 sirene = pygame.mixer.Sound(os.path.join(filepath, 'sounds/sirene_part1.mp3'))
-                #pygame.mixer.Sound.play(sirene)
+                pygame.mixer.Sound.play(sirene)
             except Exception as Argument:
                 logging.exception("Error occurred while loading mp3 file")
         else:
