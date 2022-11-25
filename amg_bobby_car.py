@@ -235,6 +235,7 @@ while True:
     ###################
     if blueButton.is_pressed:
         print("Ignition State", AMGBobbyCarIgnitionState)
+        print("Car Mode", AMGBobbyCarMode)
         if AMGBobbyCarIgnitionState == 0:
             if AMGBobbyCarMode == 1:                
                 # Start music mode
