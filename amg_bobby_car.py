@@ -264,6 +264,7 @@ while True:
     ###################    
     if redButton.is_pressed:
         # Turn off the ignition (it doesn´t matter if it is On or Off)
+        print("Test Trigger for RED Button")
         setIgnitionToOff()
         
         # Imcrement the Vehicle Mode (Switch the mode of the AMG Bobby Car)
