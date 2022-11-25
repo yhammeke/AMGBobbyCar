@@ -257,7 +257,7 @@ while True:
             AMGBobbyCarIgnitionState = 1
         else:
             print("Blue Button is pushed.Ignition is not equal to 0 and shall be set to 0.")
-            #setIgnitionToOff()
+            setIgnitionToOff()
         sleep(0.2)
         
     
