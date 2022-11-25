@@ -173,9 +173,9 @@ def setIgnitionToOff():
 
 #blink(on_time=1, off_time=1, n=None, background=True)
 def setHeartBeatToOn():
-    led_red.blink(0.1,3,0,0)
+    led_red.blink(0.05,3,0,0)
     sleep(0.1)
-    led_blue.blink(0.1,3,0,0)
+    led_blue.blink(0.05,3,0,0)
 
 # Turn all LEDs off at startup.
 setVehicleLightsToOff()
