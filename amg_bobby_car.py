@@ -297,7 +297,7 @@ while True:
             # Play the sirene sound.
             try:
                 sirene = pygame.mixer.Sound(os.path.join(filepath, 'sounds/sirene_part1.mp3'))
-            leftSteeringWheelButton.when_pressed = pygame.mixer.Sound.play(sirene)
+                pygame.mixer.Sound.play(sirene)
         sleep(1)
     
     
