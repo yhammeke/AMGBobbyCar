@@ -144,6 +144,15 @@ def fadeOutTheLights():
     led_rear.blink(0,1,0,1,1)
     sleep(0.5)
 
+def fadeInTheLights():
+    led_front_left.blink(1,0,1,0,1)
+    led_front_right.blink(1,0,1,0,1)
+    led_rear.blink(1,0,1,0,1)
+    sleep(1)
+    led_front_left.on()
+    led_front_right.on()
+    led_rear.on()
+
 def setVehicleLightsToOff():
     led_front_left.off()
     led_front_right.off()
@@ -221,6 +230,8 @@ AMGBobbyCarMode = 1
 # 1 --> ON
 AMGBobbyCarIgnitionState = 0
 
+SireneState = 0
+
 while True:    
     
     ###################
@@ -244,8 +255,8 @@ while True:
                 sleep(1)
                 led_blue.blink(0,0,1,1)
             elif AMGBobbyCarMode == 2:
-                setVehicleLightsToPoliceMode()
-                setICLightsToPoliceMode()
+                startEngineAndRace()
+                
             AMGBobbyCarIgnitionState = 1
         else:
             print("Blue Button is pushed.Ignition is not equal to 0 and shall be set to 0.")
@@ -295,12 +306,19 @@ while True:
             print('Previous Song:', previousSong)
         elif AMGBobbyCarMode == 2 and AMGBobbyCarIgnitionState == 1:
             # Play the sirene sound.
-            try:
-                pygame.mixer.music.load(os.path.join(soundsPath, "sirene_part1.mp3"))
-                pygame.mixer.music.play()
-                print("Sirene")
-            except Exception as Argument:
-                logging.exception("Error occurred while loading mp3 file")
+            if SireneState == 0:
+                try:
+                    pygame.mixer.music.load(os.path.join(soundsPath, "sirene_part1.mp3"))
+                    pygame.mixer.music.play()
+                    print("Sirene")
+                except Exception as Argument:
+                    logging.exception("Error occurred while loading mp3 file")
+                setVehicleLightsToPoliceMode()
+                setICLightsToPoliceMode()
+                SireneState = 1
+            else:
+                stopTheMusic()
+                SireneState = 0
         else:
             print("Szenario noch nicht implementiert")
         sleep(1)
