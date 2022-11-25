@@ -296,7 +296,7 @@ while True:
         elif AMGBobbyCarMode == 2 and AMGBobbyCarIgnitionState == 1:
             # Play the sirene sound.
             try:
-                sirene = pygame.mixer.Sound(os.path.join(filepath, 'sounds/sirene_part1.mp3'))
+                sirene = pygame.mixer.Sound(os.path.join(soundsPath, "sirene_part1.mp3"))
                 pygame.mixer.Sound.play(sirene)
                 print("Sirene")
             except Exception as Argument:
