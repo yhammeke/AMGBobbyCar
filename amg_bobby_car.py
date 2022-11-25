@@ -166,7 +166,10 @@ def setICLightsToOff():
 
 def setIgnitionToOff():
     stopTheMusic()
-    fadeOutTheLights()
+    if led_rear.is_lit:
+        fadeOutTheLights()
+    else:
+        setVehicleLightsToOff()
     setICLightsToOff()
     AMGBobbyCarIgnitionState = 0
     setHeartBeatToOn()
@@ -231,6 +234,7 @@ while True:
     # BLUE BUTTON LOGIC
     ###################
     if blueButton.is_pressed:
+        print("Ignition State", AMGBobbyCarIgnitionState)
         if AMGBobbyCarIgnitionState == 0:
             if AMGBobbyCarMode == 1:                
                 # Start music mode
