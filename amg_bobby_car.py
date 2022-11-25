@@ -145,18 +145,40 @@ def fadeOutTheLights():
     led_rear.blink(0,1,0,1,1)
     sleep(0.5)
 
-def turnOffTheLights():
+def setVehicleLightsToOff():
     led_front_left.off()
     led_front_right.off()
     led_rear.off()
     sleep(0.5)
 
-# Turn all LEDs off at startup.
+def setVehicleLightsToPoliceMode():
+    led_front_left.blink(0.05,0.05,0,0)
+    sleep(0.05)
+    led_front_left.blink(0.05,0.05,0,0)
+    led_rear.blink(0.05,0.05,0,0)
 
-led_white.off()
-led_blue.off()
-led_red.off()
-turnOffTheLights()
+def setICLightsToPoliceMode():
+    
+
+def setICLightsToOff():
+    led_blue.off()
+    led_red.off()
+
+def setIgnitionToOff():
+    stopTheMusic()
+    fadeOutTheLights()
+    setICLightsToOff()
+    AMGBobbyCarIgnitionState = 0
+
+#blink(on_time=1, off_time=1, n=None, background=True)
+def setHeartBeatToOn():
+    led_red.blink(0.1,3,0,0)
+    sleep(0.1)
+    led_blue.blink(0.1,3,0,0)
+
+# Turn all LEDs off at startup.
+setVehicleLightsToOff()
+setICLightsToOff()
 
 #led_white.blink(0.1,0.1,1,1)
 #led_red.blink(0.05,0.05,0,0,None,False)
@@ -167,9 +189,9 @@ turnOffTheLights()
 
 
 # Let the RED LED blink all the time.
-led_red.blink(0,0,1,1)
+setHeartBeatToOn()
 
-# Initialize pygame
+# Initialize pygame library
 pygame.init()
 
 # Define the event for the end of the song
@@ -189,20 +211,23 @@ print(len(songs), 'songs have been found.')
 
 previousSong = 0
 
-# Define the vehicle status
+# Define the Vehicle Mode
 class VehicleMode(Enum):
     OFF = 0
     MUSIC = 1
     CAR = 2
 AMGBobbyCarMode = 1
 
-# Define the vehicle mode
+# Define the ignition state
 # 0 --> OFF
 # 1 --> ON
 AMGBobbyCarIgnitionState = 0
 
 while True:    
     
+    ###################
+    # BLUE BUTTON LOGIC
+    ###################
     if blueButton.is_pressed:
         if AMGBobbyCarIgnitionState == 0:
             if AMGBobbyCarMode == 1:                
@@ -218,19 +243,25 @@ while True:
                 led_red.blink(0,0,1,1)
                 sleep(1)
                 led_blue.blink(0,0,1,1)
+            elif AMGBobbyCarMode == 2:
+                setVehicleLightsToPoliceMode()
+                
             AMGBobbyCarIgnitionState = 1
         elif AMGBobbyCarIgnitionState == 1:
-            stopTheMusic()
-            fadeOutTheLights()
-            led_blue.off()
-            AMGBobbyCarIgnitionState = 0
+            setIgnitionToOff()
         sleep(0.2)
         
-            
+    
+    ###################
+    # RED BUTTON LOGIC
+    ###################    
     if redButton.is_pressed:
-        # Imcrement the Vehicle State (Switch the mode of the AMG Bobby Car)
+        # Turn off the ignition (it doesn´t matter if it is On or Off)
+        setIgnitionToOff()
+        
+        # Imcrement the Vehicle Mode (Switch the mode of the AMG Bobby Car)
         if AMGBobbyCarMode == 2:
-            AMGBobbyCarMode = 0
+            AMGBobbyCarMode = 1
         else:
             AMGBobbyCarMode = AMGBobbyCarMode + 1
         print("Red Button is pressed")
@@ -249,7 +280,7 @@ while True:
             announceCarMode()
         else:
             print("Incorrect AMGBobbyCarMode")
-        
+        # Prevent too frequent mode switching
         sleep(3)
     
     if leftSteeringWheelButton.is_pressed:
@@ -281,10 +312,6 @@ while True:
             if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
                 startRandomSong()
 
-
-        
-
-
 # Define the sound file
 #engine_sound_effect = pygame.mixer.Sound('AMG-63.wav')
 #engine_sound_effect = pygame.mixer.Sound('AMG-65.wav')
@@ -295,8 +322,3 @@ while True:
 #engine_sound_effect.set_volume(0.2)
 #engine_sound_effect.play()
 
-
-# Play the mp3 song
-# on the bluetooth speaker
-# Terminal command: omxplayer -o alsa Music/kapli.mp3
-#os.system('omxplayer -o alsa Music/kapli.mp3')
