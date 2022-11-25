@@ -296,8 +296,8 @@ while True:
         elif AMGBobbyCarMode == 2 and AMGBobbyCarIgnitionState == 1:
             # Play the sirene sound.
             try:
-                sirene = pygame.mixer.Sound(os.path.join(soundsPath, "sirene_part1.mp3"))
-                pygame.mixer.Sound.play(sirene)
+                pygame.mixer.music.load(os.path.join(soundsPath, "sirene_part1.mp3"))
+                pygame.mixer.music.play()
                 print("Sirene")
             except Exception as Argument:
                 logging.exception("Error occurred while loading mp3 file")
