@@ -171,7 +171,6 @@ def setIgnitionToOff():
     else:
         setVehicleLightsToOff()
     setICLightsToOff()
-    AMGBobbyCarIgnitionState = 0
     print("Ignition State at setIgnitionOff", AMGBobbyCarIgnitionState)
     setHeartBeatToOn()
     
@@ -258,6 +257,7 @@ while True:
         else:
             print("Blue Button is pushed.Ignition is not equal to 0 and shall be set to 0.")
             setIgnitionToOff()
+            AMGBobbyCarIgnitionState = 0
         sleep(0.2)
         
     
