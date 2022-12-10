@@ -1,6 +1,13 @@
 # AMGBobbyCar
 Python Project for the AMG Bobby Car
 
+## To Dos:
+
+- [ ] Fixierung von Pi am Auto
+- [ ] Fixierung der Powerbank im Auto
+- [ ] Implementiere die erste Version der Spracherkennung (Polizei, Kindermusik, Auto, Weihnachtsbaum)
+- [ ] 
+
 
 ## How to stop the Python Script which is running since Boot
 In the Terminal:  ps aux|grep pytho  
@@ -35,5 +42,4 @@ Function: Light
 ### Rear lights
 Function: Light    
 **LED**: GPIO27
-
 
