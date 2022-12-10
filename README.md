@@ -6,7 +6,6 @@ Python Project for the AMG Bobby Car
 - [ ] Fixierung von Pi am Auto
 - [ ] Fixierung der Powerbank im Auto
 - [ ] Implementiere die erste Version der Spracherkennung (Polizei, Kindermusik, Auto, Weihnachtsbaum)
-- [ ] 
 
 
 ## How to stop the Python Script which is running since Boot
