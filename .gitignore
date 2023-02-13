@@ -6,6 +6,9 @@ __pycache__/
 # MP3 files
 *.mp3
 
+# WAV files
+*.wav
+
 # C extensions
 *.so
 
