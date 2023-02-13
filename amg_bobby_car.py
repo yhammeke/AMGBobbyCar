@@ -49,7 +49,7 @@ led_rear = PWMLED(27)
 def startEngineAndRace():
     print('Engine run and race')
     pygame.mixer.music.load("AMG-65_race.wav")
-    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.set_volume(0.7)
     pygame.mixer.music.play()
     
 def startMusicMode():
@@ -77,7 +77,7 @@ def startRandomSong():
         logging.exception("Error occurred while loading mp3 file")
     
     # Define the volume
-    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.set_volume(0.9)
     
     # Start playing the song
     try:
@@ -97,7 +97,7 @@ def startTheSong(song):
         logging.exception("Error occurred while loading mp3 file")
     
     # Define the volume
-    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.set_volume(0.9)
     
     # Start playing the song
     try:
@@ -113,7 +113,7 @@ def announceOFFMode():
         pygame.mixer.music.load(os.path.join(soundsPath, "offmode_announce_1.mp3"))
     except Exception as Argument:
         logging.exception("Error occurred while loading mp3 file")
-    pygame.mixer.music.set_volume(0.7)
+    pygame.mixer.music.set_volume(0.9)
     pygame.mixer.music.play()
 
 def announceMusicMode():
@@ -122,7 +122,7 @@ def announceMusicMode():
         pygame.mixer.music.load(os.path.join(soundsPath, "musicbox_announce_1.mp3"))
     except Exception as Argument:
         logging.exception("Error occurred while loading mp3 file")
-    pygame.mixer.music.set_volume(0.7)
+    pygame.mixer.music.set_volume(0.9)
     pygame.mixer.music.play()
 
 def announceCarMode():
@@ -131,7 +131,7 @@ def announceCarMode():
         pygame.mixer.music.load(os.path.join(soundsPath, "carmode_announce_1.mp3"))
     except Exception as Argument:
         logging.exception("Error occurred while loading mp3 file")
-    pygame.mixer.music.set_volume(0.7)
+    pygame.mixer.music.set_volume(0.9)
     pygame.mixer.music.play()
 
 def stopTheMusic():
