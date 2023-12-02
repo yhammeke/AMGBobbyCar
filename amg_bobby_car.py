@@ -47,10 +47,13 @@ led_front_left = PWMLED(18)
 led_rear = PWMLED(27)
 
 def startEngineAndRace():
-    print('Engine run and race')
-    pygame.mixer.music.load("AMG-65_race.wav")
-    pygame.mixer.music.set_volume(0.7)
-    pygame.mixer.music.play()
+    try:
+        pygame.mixer.music.load(os.path.join(soundsPath, "800hp_Supra_POV_Pure_Sound.mp3"))
+        pygame.mixer.music.set_volume(0.7)
+        pygame.mixer.music.play()
+        print("Engine run and race")
+    except Exception as Argument:
+        logging.exception("Error occurred while loading mp3 file")
     
 def startMusicMode():
     print('startMusicMode')
@@ -165,13 +168,34 @@ def setVehicleLightsToPoliceMode():
     led_front_right.blink(0.1,0.1,0,0)
     led_rear.blink(0.1,0.1,0,0)
 
+def setVehicleLightsToPolizeiMode():
+    led_front_left.blink(1,1,0,0)
+    sleep(0.5)
+    led_front_right.blink(1,1,0,0)
+    led_rear.blink(0.5,0.5,0,0)
+
 def setICLightsToPoliceMode():
     led_blue.blink(0.1,0.1,0,0)
     led_red.blink(0.1,0.1,0,0)
 
+def setICLightsToPolizeiMode():
+    led_blue.blink(0.5,0.5,0,0)
+    sleep(0.25)
+    led_red.blink(0.5,0.5,0,0)
+
+def setICLightsToIgnitionOn():
+    led_red.off()
+    led_blue.blink(1,0,1,0,1)
+    sleep(1)
+    led_blue.on()
+
 def setICLightsToOff():
     led_blue.off()
     led_red.off()
+
+def setICLightsToIDLE():
+    led_blue.value = 0.2
+    led_red.value = 0.2
 
 def setIgnitionToOff():
     stopTheMusic()
@@ -181,7 +205,8 @@ def setIgnitionToOff():
     else:
         setVehicleLightsToOff()
     print("Ignition State at setIgnitionOff", AMGBobbyCarIgnitionState)
-    setHeartBeatToOn()
+    #setHeartBeatToOn()
+    setICLightsToIDLE()
     
 
 #blink(on_time=1, off_time=1, n=None, background=True)
@@ -196,7 +221,8 @@ setICLightsToOff()
 
 
 # Let the RED LED blink all the time.
-setHeartBeatToOn()
+#setHeartBeatToOn()
+setICLightsToIDLE()
 
 # Initialize pygame library
 pygame.init()
@@ -223,7 +249,7 @@ class VehicleMode(Enum):
     OFF = 0
     MUSIC = 1
     CAR = 2
-AMGBobbyCarMode = 1
+AMGBobbyCarMode = 2
 
 # Define the ignition state
 # 0 --> OFF
@@ -255,7 +281,12 @@ while True:
                 sleep(1)
                 led_blue.blink(0,0,1,1)
             elif AMGBobbyCarMode == 2:
+                setICLightsToOff()
                 startEngineAndRace()
+                sleep(2.5)
+                fadeInTheLights()
+                sleep(1.5)
+                setICLightsToIgnitionOn()                
                 
             AMGBobbyCarIgnitionState = 1
         else:
@@ -295,7 +326,7 @@ while True:
         else:
             print("Incorrect AMGBobbyCarMode")
         # Prevent too frequent mode switching
-        sleep(3)
+        sleep(1)
     
     if leftSteeringWheelButton.is_pressed:
         print('Left Button is pressed')
@@ -304,11 +335,12 @@ while True:
             # randomSong = random.randrange(0,len(songs))
             startTheSong(previousSong)
             print('Previous Song:', previousSong)
-        elif AMGBobbyCarMode == 2 and AMGBobbyCarIgnitionState == 1:
+        elif AMGBobbyCarMode == 2:
             # Play the sirene sound.
             if SireneState == 0:
                 try:
                     pygame.mixer.music.load(os.path.join(soundsPath, "sirene_part1.mp3"))
+                    pygame.mixer.music.set_volume(0.2)
                     pygame.mixer.music.play()
                     print("Sirene")
                 except Exception as Argument:
@@ -317,11 +349,11 @@ while True:
                 setICLightsToPoliceMode()
                 SireneState = 1
             else:
-                stopTheMusic()
+                setIgnitionToOff()
                 SireneState = 0
         else:
             print("Szenario noch nicht implementiert")
-        sleep(1)
+        sleep(0.1)
     
     
     if rightSteeringWheelButton.is_pressed:
@@ -333,7 +365,26 @@ while True:
             randomSong = random.randrange(0,len(songs))
             startTheSong(randomSong)
             print('Previous Song:', previousSong)
-        sleep(1)
+            sleep(0.1)
+        elif AMGBobbyCarMode == 2:
+            # Play the sirene sound.
+            if SireneState == 0:
+                try:
+                    pygame.mixer.music.load(os.path.join(soundsPath, "martinshorn.mp3"))
+                    pygame.mixer.music.set_volume(0.7)
+                    pygame.mixer.music.play()
+                    print("Horn")
+                except Exception as Argument:
+                    logging.exception("Error occurred while loading mp3 file")
+                setVehicleLightsToPolizeiMode()
+                setICLightsToPolizeiMode()
+                SireneState = 1
+            else:
+                setIgnitionToOff()
+                SireneState = 0
+            sleep(0.1)
+                
+    #rightSteeringWheelButton.when_released = stopTheMusic()    
     
     # Wait for the END of the song.
     for event in pygame.event.get():
