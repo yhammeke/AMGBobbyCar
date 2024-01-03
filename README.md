@@ -20,6 +20,14 @@ Function: SYSTEM ON/OFF
 **LED**: GPIO2  
 **BUTTON**: GPIO3
 
+### Steering Wheel Left Button
+Function: e.g. previous song, police siren
+**BUTTON**: GPIO10
+
+### Steering Wheel Right Button
+Function: e.g. next song, fire-engine siren
+**BUTTON**: GPIO10
+
 ### Blue Button
 Function: Ignition ON/OFF    
 **LED**: GPIO25  
