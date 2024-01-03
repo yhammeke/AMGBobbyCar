@@ -3,8 +3,6 @@ Python Project for the AMG Bobby Car
 
 ## To Dos:
 
-- [ ] Fixierung von Pi am Auto
-- [ ] Fixierung der Powerbank im Auto
 - [ ] Implementiere die erste Version der Spracherkennung (Polizei, Kindermusik, Auto, Weihnachtsbaum)
 
 
@@ -22,11 +20,11 @@ Function: SYSTEM ON/OFF
 
 ### Steering Wheel Left Button
 Function: e.g. previous song, police siren    
-**BUTTON**: GPIO10
+**BUTTON**: GPIO20
 
 ### Steering Wheel Right Button
 Function: e.g. next song, fire-engine siren    
-**BUTTON**: GPIO10
+**BUTTON**: GPIO26
 
 ### Blue Button
 Function: Ignition ON/OFF    
