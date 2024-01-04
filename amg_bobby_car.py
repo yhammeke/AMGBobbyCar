@@ -276,6 +276,22 @@ def turnICLEDOff():
 OnOffSwitch.when_pressed = turnICLEDOn
 OnOffSwitch.when_released = turnICLEDOff
 
+def startTheEngine():
+    print("Engine Start Process over the Ignition Switch")
+    setICLightsToOff()
+    startEngineAndRace()
+    sleep(2.5)
+    fadeInTheLights()
+    sleep(1.5)
+    setICLightsToIgnitionOn()
+
+def stopTheEngine():
+    print("Engine Stop Process over the Ignition Switch")
+    setIgnitionToOff()
+
+IgnSwitch.when_pressed = startTheEngine
+IgnSwitch.when_released = stopTheEngine
+
 
 while True:    
     
