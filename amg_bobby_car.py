@@ -264,6 +264,19 @@ AMGBobbyCarIgnitionState = 0
 
 SireneState = 0
 
+def turnICLEDOn():
+    print("ON/OFF Switch is now ON")
+    led_ic.on()
+
+def turnICLEDOff():
+    print("ON/OFF Switch is now OFF")
+    led_ic.off()
+
+
+OnOffSwitch.when_pressed = turnICLEDOn
+OnOffSwitch.when_released = turnICLEDOff
+
+
 while True:    
     
     ###################
