@@ -38,6 +38,11 @@ redButton = Button(15)
 leftSteeringWheelButton = Button(20)
 rightSteeringWheelButton = Button(26)
 
+# Define AMG Bobby Car Switches
+IgnSwitch = Button(9)
+OnOffSwitch = Button(11)
+
+# Define AMG Bobby Car Lights
 led_white = PWMLED(2)
 led_blue = PWMLED(25)
 led_red = PWMLED(21)
@@ -45,6 +50,7 @@ led_red = PWMLED(21)
 led_front_right = PWMLED(17)
 led_front_left = PWMLED(18)
 led_rear = PWMLED(27)
+led_ic = PWMLED(22)
 
 def startEngineAndRace():
     try:
