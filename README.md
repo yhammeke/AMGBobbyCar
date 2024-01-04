@@ -13,7 +13,7 @@ sudo kill -9 <Process ID>
 
 ## Hardware Configuration
 
-### White Button  
+### Green Button  
 Function: SYSTEM ON/OFF  
 **LED**: GPIO2  
 **BUTTON**: GPIO3
