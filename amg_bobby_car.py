@@ -7,7 +7,7 @@ print(os.path.dirname(__file__))
 import pygame
 # Package for Buttons and Leds
 from gpiozero import Button, PWMLED
-from time import sleep
+from time import sleep, time
 
 # Package for random song selection
 import random
@@ -271,8 +271,7 @@ def turnICLEDOn():
 def turnICLEDOff():
     print("ON/OFF Switch is now OFF")
     led_ic.off()
-
-
+    
 OnOffSwitch.when_pressed = turnICLEDOn
 OnOffSwitch.when_released = turnICLEDOff
 
@@ -292,6 +291,9 @@ def stopTheEngine():
 IgnSwitch.when_pressed = startTheEngine
 IgnSwitch.when_released = stopTheEngine
 
+# Organize the time limit for Martinshorn
+sirenTimeLimit = 30 # in seconds
+martinshorn_start_time = time()
 
 while True:    
     
@@ -408,6 +410,7 @@ while True:
                     pygame.mixer.music.load(os.path.join(soundsPath, "martinshorn.mp3"))
                     pygame.mixer.music.set_volume(0.7)
                     pygame.mixer.music.play()
+                    martinshorn_start_time = time() # reset the start point for the timer
                     print("Horn")
                 except Exception as Argument:
                     logging.exception("Error occurred while loading mp3 file")
@@ -418,7 +421,14 @@ while True:
                 setIgnitionToOff()
                 SireneState = 0
             sleep(0.1)
-                
+    
+    if SireneState == 1:
+        elapsed_time = time() - martinshorn_start_time
+        if elapsed_time >= sirenTimeLimit:
+            print("Martinshorn will be automatically deactivated")
+            setIgnitionToOff()
+            SireneState = 0
+            
     #rightSteeringWheelButton.when_released = stopTheMusic()    
     
     # Wait for the END of the song.
