@@ -36,6 +36,14 @@ Function: Mode Switch
 **LED**: GPIO21  
 **BUTTON**: GPIO15
 
+### Ignition Switch
+Function: Ignition Switch    
+**BUTTON**: GPIOXYZ  
+
+### ON/OFF Switch
+Function: Switch    
+**BUTTON**: GPIOXYZ  
+
 ### Front left light
 Function: Light    
 **LED**: GPIO18  
@@ -47,4 +55,8 @@ Function: Light
 ### Rear lights
 Function: Light    
 **LED**: GPIO27
+
+### Blue Instrument Cluster lights
+Function: Light    
+**LED**: GPIOXYZ
 
