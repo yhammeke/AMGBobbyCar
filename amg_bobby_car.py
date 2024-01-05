@@ -54,15 +54,37 @@ led_front_left = PWMLED(18)   # Front left headlight
 led_rear = PWMLED(27)         # Taillights
 led_ic = PWMLED(22)           # Instrument Cluster Backlight
 
-def startEngineAndRace():
+#####################################
+# END OF THE HARDWARE CONFIGURATION #
+#####################################
+
+#####################################
+# ENGINE RELATED FUNCTIONS          #
+#####################################
+
+def playEngineStartSound():
     try:
-        pygame.mixer.music.load(os.path.join(soundsPath, "800hp_Supra_POV_Pure_Sound.mp3"))
+        pygame.mixer.music.load(os.path.join(soundsPath, "AMG-65_race.wav"))
         pygame.mixer.music.set_volume(0.7)
         pygame.mixer.music.play()
         print("Engine started")
     except Exception as Argument:
         logging.exception("Error occurred while loading mp3 file")
-    
+
+def startEngine():
+    print("Engine Start Process over the Ignition Switch")
+    setICLightsToOff()
+    playEngineStartSound()
+    fadeInTheLights()
+
+def stopEngine():
+    print("Engine Stop Process over the Ignition Switch")
+    setIgnitionToOff()
+
+#####################################
+# END OF ENGINE RELATED FUNCTIONS   #
+#####################################
+
 def startMusicMode():
     print("Music Mode started")
     # Control LEDs
@@ -158,10 +180,12 @@ def fadeInTheLights():
     led_front_left.blink(1,0,1,0,1)
     led_front_right.blink(1,0,1,0,1)
     led_rear.blink(1,0,1,0,1)
+    led_ic.blink(1,0,1,0,1)
     sleep(1)
     led_front_left.on()
     led_front_right.on()
     led_rear.on()
+    led_ic.on()
 
 def setVehicleLightsToOff():
     led_front_left.off()
@@ -190,19 +214,15 @@ def setICLightsToPolizeiMode():
     sleep(0.25)
     led_red.blink(0.5,0.5,0,0)
 
-def setICLightsToIgnitionOn():
-    led_red.off()
-    led_blue.blink(1,0,1,0,1)
-    sleep(1)
-    led_blue.on()
-
 def setICLightsToOff():
     led_blue.off()
     led_red.off()
+    led_ic.off()
 
 def setICLightsToIDLE():
-    led_blue.value = 0.2
-    led_red.value = 0.2
+    #led_blue.value = 0.2
+    #led_red.value = 0.2
+    led_ic.blink(1,0,1,1) # Let the IC LED pulse with 2 seconds period
 
 def setIgnitionToOff():
     stopTheMusic()
@@ -212,23 +232,16 @@ def setIgnitionToOff():
     else:
         setVehicleLightsToOff()
     print("Ignition State at setIgnitionOff", AMGBobbyCarIgnitionState)
-    #setHeartBeatToOn()
     setICLightsToIDLE()
     
 
 #blink(on_time=1, off_time=1, n=None, background=True)
-def setHeartBeatToOn():
-    led_red.blink(0.05,3,0,0)
-    sleep(0.05)
-    led_blue.blink(0.05,3,0,0)
 
 # Turn all LEDs off at startup.
 setVehicleLightsToOff()
 setICLightsToOff()
 
-
-# Let the RED LED blink all the time.
-#setHeartBeatToOn()
+# Let the IC LEDs blink.
 setICLightsToIDLE()
 
 # Initialize pygame library
@@ -276,21 +289,8 @@ def turnICLEDOff():
 OnOffSwitch.when_pressed = turnICLEDOn
 OnOffSwitch.when_released = turnICLEDOff
 
-def startTheEngine():
-    print("Engine Start Process over the Ignition Switch")
-    setICLightsToOff()
-    startEngineAndRace()
-    sleep(2.5)
-    fadeInTheLights()
-    sleep(1.5)
-    setICLightsToIgnitionOn()
-
-def stopTheEngine():
-    print("Engine Stop Process over the Ignition Switch")
-    setIgnitionToOff()
-
-IgnSwitch.when_pressed = startTheEngine
-IgnSwitch.when_released = stopTheEngine
+IgnSwitch.when_pressed = startEngine
+IgnSwitch.when_released = stopEngine
 
 # Organize the time limit for Martinshorn
 sirenTimeLimit = 30 # in seconds
@@ -319,12 +319,7 @@ while True:
                 sleep(1)
                 led_blue.blink(0,0,1,1)
             elif AMGBobbyCarMode == 2:
-                setICLightsToOff()
-                startEngineAndRace()
-                sleep(2.5)
-                fadeInTheLights()
-                sleep(1.5)
-                setICLightsToIgnitionOn()                
+                startEngine()               
                 
             AMGBobbyCarIgnitionState = 1
         else:
@@ -366,6 +361,9 @@ while True:
         # Prevent too frequent mode switching
         sleep(1)
     
+    ####################################
+    # LEFT STEERING WHEEL BUTTON LOGIC #
+    ####################################
     if leftSteeringWheelButton.is_pressed:
         print('Left Button is pressed')
         if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
@@ -391,9 +389,11 @@ while True:
                 SireneState = 0
         else:
             print("Szenario noch nicht implementiert")
-        sleep(0.1)
+        sleep(0.5)
     
-    
+    #####################################
+    # RIGHT STEERING WHEEL BUTTON LOGIC #
+    #####################################
     if rightSteeringWheelButton.is_pressed:
         print('Right Button is pressed')
         if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
@@ -403,7 +403,7 @@ while True:
             randomSong = random.randrange(0,len(songs))
             startTheSong(randomSong)
             print('Previous Song:', previousSong)
-            sleep(0.1)
+            sleep(0.5)
         elif AMGBobbyCarMode == 2:
             # Play the sirene sound.
             if SireneState == 0:
@@ -421,7 +421,7 @@ while True:
             else:
                 setIgnitionToOff()
                 SireneState = 0
-            sleep(0.1)
+            sleep(0.5)
     
     if SireneState == 1:
         elapsed_time = time() - martinshorn_start_time
@@ -440,13 +440,4 @@ while True:
             if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
                 startRandomSong()
 
-# Define the sound file
-#engine_sound_effect = pygame.mixer.Sound('AMG-63.wav')
-#engine_sound_effect = pygame.mixer.Sound('AMG-65.wav')
-#engine_sound_effect = pygame.mixer.Sound('AMG-65_race.wav')
-
-
-#engine_sound_effect = pygame.mixer.Sound('S65_Engine_Start_and_Run.wav')
-#engine_sound_effect.set_volume(0.2)
-#engine_sound_effect.play()
 
