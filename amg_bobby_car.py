@@ -1,5 +1,4 @@
 #!/usr/bin/python
-#from omxplayer import OMXPlayer
 import os
 import os.path
 print(os.path.dirname(__file__))
@@ -12,10 +11,10 @@ from time import sleep, time
 # Package for random song selection
 import random
 
-# import lib for file list creation
+# Package for file list creation
 import glob
 
-# importing module
+# Package for Logging
 import logging
 
 from enum import Enum
@@ -28,42 +27,44 @@ logging.basicConfig(filename="/home/pi/AMGBobbyCar/log_file.log",
  
 # Creating an object
 logger = logging.getLogger()
- 
 # Setting the threshold of logger to DEBUG
 logger.setLevel(logging.DEBUG)
-    
-# Define AMG Bobby Car Buttons
-blueButton = Button(10)
-redButton = Button(15)
-leftSteeringWheelButton = Button(20)
-rightSteeringWheelButton = Button(26)
 
-# Define AMG Bobby Car Switches
-IgnSwitch = Button(9)
-OnOffSwitch = Button(11)
+##########################
+# HARDWARE CONFIGURATION #
+##########################
 
-# Define AMG Bobby Car Lights
-led_white = PWMLED(2)
-led_blue = PWMLED(25)
-led_red = PWMLED(21)
+# Buttons
+blueButton = Button(10)  # Instrument Cluster Blue Button
+redButton = Button(15)   # Instrument Cluster Red Button
+leftSteeringWheelButton = Button(20)  # Left Button of the Steering Wheel 
+rightSteeringWheelButton = Button(26) # Right Button of the Steering Wheel
 
-led_front_right = PWMLED(17)
-led_front_left = PWMLED(18)
-led_rear = PWMLED(27)
-led_ic = PWMLED(22)
+# Switches
+IgnSwitch = Button(9)    # Ignition Switch
+OnOffSwitch = Button(11) # On Off Button
+
+# Lights
+led_white = PWMLED(2) # Power ON LED
+led_blue = PWMLED(25) # Instrument Cluster Right LED
+led_red = PWMLED(21)  # Instrument Cluster Left LED
+
+led_front_right = PWMLED(17)  # Front right headlight
+led_front_left = PWMLED(18)   # Front left headlight
+led_rear = PWMLED(27)         # Taillights
+led_ic = PWMLED(22)           # Instrument Cluster Backlight
 
 def startEngineAndRace():
     try:
         pygame.mixer.music.load(os.path.join(soundsPath, "800hp_Supra_POV_Pure_Sound.mp3"))
         pygame.mixer.music.set_volume(0.7)
         pygame.mixer.music.play()
-        print("Engine run and race")
+        print("Engine started")
     except Exception as Argument:
         logging.exception("Error occurred while loading mp3 file")
     
 def startMusicMode():
-    print('startMusicMode')
-    #startRandomSong()
+    print("Music Mode started")
     # Control LEDs
     led_front_left.blink(0,0,1,1)
     sleep(1)
@@ -88,7 +89,7 @@ def startRandomSong():
     # Define the volume
     pygame.mixer.music.set_volume(0.9)
     
-    # Start playing the song
+    # Play the song
     try:
         pygame.mixer.music.play()
     except Exception as Argument:
@@ -144,7 +145,7 @@ def announceCarMode():
     pygame.mixer.music.play()
 
 def stopTheMusic():
-    print('Engine stop')
+    print('Stop Music or Sounds')
     pygame.mixer.music.stop()
 
 def fadeOutTheLights():
