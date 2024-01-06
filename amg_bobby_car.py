@@ -18,6 +18,9 @@ import glob
 import logging
 
 from enum import Enum
+
+from pynput.keyboard import Key, Listener
+import threading
  
 # Create and configure logger
 # TODO: think about creating one loggin file per day.
@@ -96,7 +99,7 @@ def startMusicMode():
     
 
 def startRandomSong():
-    
+    # TODO: no song repetitions for at least 5 songs.
     # Select random song from the list
     randomSong = random.randrange(0,len(songs))
     previousSong = randomSong
@@ -296,38 +299,59 @@ IgnSwitch.when_released = stopEngine
 sirenTimeLimit = 30 # in seconds
 martinshorn_start_time = time()
 
-while True:    
+b_key_pressed = False
+
+def evaluateBlueButton():
+    print("evaluateBlueButton")
+    global AMGBobbyCarIgnitionState
+    global AMGBobbyCarMode
+    print("Ignition State", AMGBobbyCarIgnitionState)
+    print("Car Mode", AMGBobbyCarMode)
+    if AMGBobbyCarIgnitionState == 0:
+        if AMGBobbyCarMode == 1:                
+            # Start music mode
+            startMusicMode()
+            # Select random song from the list
+            randomSong = random.randrange(0,len(songs))
+            # Save the previous song before the next song selection
+            previousSong = randomSong
+            startTheSong(randomSong)
+            print('Previous Song:', previousSong)
+            sleep(0.5)
+            led_red.blink(0,0,1,1)
+            sleep(1)
+            led_blue.blink(0,0,1,1)
+        elif AMGBobbyCarMode == 2:
+            startEngine()               
+            
+        AMGBobbyCarIgnitionState = 1
+    else:
+        print("Blue Button is pushed.Ignition is not equal to 0 and shall be set to 0.")
+        setIgnitionToOff()
+        AMGBobbyCarIgnitionState = 0
+    sleep(0.2)
+
+
+def on_key_press(key):
+    print(f"Key: {key}")
+    if key == Key.f1:
+        evaluateBlueButton()
+
+    
+def on_key_release(key):
+    print("Keyboard Key has been released")
+
+
+listener_thread = threading.Thread(target=lambda: Listener(on_press=on_key_press, on_release=on_key_release).start())
+listener_thread.start()
+
+while True:          
     
     ###################
     # BLUE BUTTON LOGIC
     ###################
     if blueButton.is_pressed:
-        print("Ignition State", AMGBobbyCarIgnitionState)
-        print("Car Mode", AMGBobbyCarMode)
-        if AMGBobbyCarIgnitionState == 0:
-            if AMGBobbyCarMode == 1:                
-                # Start music mode
-                startMusicMode()
-                # Select random song from the list
-                randomSong = random.randrange(0,len(songs))
-                # Save the previous song before the next song selection
-                previousSong = randomSong
-                startTheSong(randomSong)
-                print('Previous Song:', previousSong)
-                sleep(0.5)
-                led_red.blink(0,0,1,1)
-                sleep(1)
-                led_blue.blink(0,0,1,1)
-            elif AMGBobbyCarMode == 2:
-                startEngine()               
-                
-            AMGBobbyCarIgnitionState = 1
-        else:
-            print("Blue Button is pushed.Ignition is not equal to 0 and shall be set to 0.")
-            setIgnitionToOff()
-            AMGBobbyCarIgnitionState = 0
-        sleep(0.2)
-        
+        evaluateBlueButton()        
     
     ###################
     # RED BUTTON LOGIC
