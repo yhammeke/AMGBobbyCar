@@ -7,6 +7,7 @@ import pygame
 # Package for Buttons and Leds
 from gpiozero import Button, PWMLED
 from time import sleep, time
+import datetime
 
 # Package for random song selection
 import random
@@ -24,7 +25,7 @@ import threading
  
 # Create and configure logger
 # TODO: think about creating one loggin file per day.
-logging.basicConfig(filename="/home/pi/AMGBobbyCar/log_file.log",
+logging.basicConfig(filename="/home/pi/AMGBobbyCar/log_file.log" + str(datetime.datetime.now()),
                     format='%(asctime)s %(message)s',
                     filemode='w')
  
@@ -299,7 +300,6 @@ IgnSwitch.when_released = stopEngine
 sirenTimeLimit = 30 # in seconds
 martinshorn_start_time = time()
 
-b_key_pressed = False
 
 def evaluateBlueButton():
     print("evaluateBlueButton")
@@ -331,19 +331,56 @@ def evaluateBlueButton():
         AMGBobbyCarIgnitionState = 0
     sleep(0.2)
 
+def evaluateSteeringWheelRightButton():
+    print('Right Button is pressed')
+    global AMGBobbyCarIgnitionState
+    global AMGBobbyCarMode
+    global previousSong
+    global SireneState
+    global martinshorn_start_time
+    if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
+        # Save the previous song before the next song selection
+        previousSong = randomSong
+        # Select random song from the list
+        randomSong = random.randrange(0,len(songs))
+        startTheSong(randomSong)
+        print('Previous Song:', previousSong)
+        sleep(0.5)
+    elif AMGBobbyCarMode == 2:
+        # Play the sirene sound.
+        if SireneState == 0:
+            try:
+                pygame.mixer.music.load(os.path.join(soundsPath, "martinshorn.mp3"))
+                pygame.mixer.music.set_volume(0.7)
+                pygame.mixer.music.play()
+                martinshorn_start_time = time() # reset the start point for the timer
+                print("Martinshorn")
+            except Exception as Argument:
+                logging.exception("Error occurred while loading mp3 file")
+            setVehicleLightsToPolizeiMode()
+            setICLightsToPolizeiMode()
+            SireneState = 1
+        else:
+            setIgnitionToOff()
+            SireneState = 0
+        sleep(0.5)
 
 def on_key_press(key):
     print(f"Key: {key}")
-    if key == Key.f1:
+    if key == Key.up:
         evaluateBlueButton()
+    elif key == Key.right:
+        evaluateSteeringWheelRightButton()
 
     
 def on_key_release(key):
     print("Keyboard Key has been released")
-
-
-listener_thread = threading.Thread(target=lambda: Listener(on_press=on_key_press, on_release=on_key_release).start())
-listener_thread.start()
+    
+try:
+    listener_thread = threading.Thread(target=lambda: Listener(on_press=on_key_press, on_release=on_key_release).start())
+    listener_thread.start()
+except Exception as Argument:
+        logging.exception("Error occurred while creating the thread")
 
 while True:          
     
@@ -419,33 +456,7 @@ while True:
     # RIGHT STEERING WHEEL BUTTON LOGIC #
     #####################################
     if rightSteeringWheelButton.is_pressed:
-        print('Right Button is pressed')
-        if AMGBobbyCarMode == 1 and AMGBobbyCarIgnitionState == 1:
-            # Save the previous song before the next song selection
-            previousSong = randomSong
-            # Select random song from the list
-            randomSong = random.randrange(0,len(songs))
-            startTheSong(randomSong)
-            print('Previous Song:', previousSong)
-            sleep(0.5)
-        elif AMGBobbyCarMode == 2:
-            # Play the sirene sound.
-            if SireneState == 0:
-                try:
-                    pygame.mixer.music.load(os.path.join(soundsPath, "martinshorn.mp3"))
-                    pygame.mixer.music.set_volume(0.7)
-                    pygame.mixer.music.play()
-                    martinshorn_start_time = time() # reset the start point for the timer
-                    print("Horn")
-                except Exception as Argument:
-                    logging.exception("Error occurred while loading mp3 file")
-                setVehicleLightsToPolizeiMode()
-                setICLightsToPolizeiMode()
-                SireneState = 1
-            else:
-                setIgnitionToOff()
-                SireneState = 0
-            sleep(0.5)
+        evaluateSteeringWheelRightButton()
     
     if SireneState == 1:
         elapsed_time = time() - martinshorn_start_time

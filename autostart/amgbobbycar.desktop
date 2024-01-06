@@ -1,0 +1,3 @@
+[Desktop Entry]
+Name=AMGBobbyCar
+Exec=/usr/bin/python3 /home/pi/AMGBobbyCar/amg_bobby_car.py
