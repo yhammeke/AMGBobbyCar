@@ -11,6 +11,12 @@ In the Terminal:  ps aux|grep pytho
 Then  
 sudo kill -9 <Process ID>
 
+## How to start the Python Script automatically
+Copy the file "amgbobbycar.desktop" from the folder "autostart" into the folder "/etc/xdg/autostart".
+Double-check the path to the Python Script in the file "amgbobbycar.desktop".
+More details are provided here: 
+https://www.makeuseof.com/how-to-run-a-raspberry-pi-program-script-at-startup/
+
 ## Hardware Configuration
 
 ### Green Button  
