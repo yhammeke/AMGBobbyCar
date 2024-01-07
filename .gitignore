@@ -9,6 +9,9 @@ __pycache__/
 # WAV files
 *.wav
 
+# logs
+logs/
+
 # C extensions
 *.so
 

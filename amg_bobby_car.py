@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import os
-import os.path
 print(os.path.dirname(__file__))
 # Package for sounds and music
 import pygame
@@ -25,7 +24,7 @@ import threading
  
 # Create and configure logger
 # TODO: think about creating one loggin file per day.
-logging.basicConfig(filename="/home/pi/AMGBobbyCar/log_file.log" + str(datetime.datetime.now()),
+logging.basicConfig(filename="/home/pi/AMGBobbyCar/logs/log_file.log" + str(datetime.datetime.now()),
                     format='%(asctime)s %(message)s',
                     filemode='w')
  
