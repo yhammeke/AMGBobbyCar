@@ -22,24 +22,27 @@ from enum import Enum
 from pynput.keyboard import Key, Listener
 import threading
 
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
-
-# Set up your Spotify credentials
-client_id = '0074e2e862b943f19fd2ebdce5e147d9'
-client_secret = '742c57785fae420ebeff136bfffe6553'
-redirect_uri = 'http://localhost:8888/callback'
-
-# Authenticate with Spotify
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
-                                               client_secret=client_secret,
-                                               redirect_uri=redirect_uri,
-                                               scope="user-modify-playback-state"))
- 
- 
-# Play a track
-track_uri = 'spotify:track:4lY38A2Od1FpAA5ApsWJ9H'  # Replace TRACK_ID with the ID of the track you want to play
-sp.start_playback(uris=[track_uri])
+# import spotipy
+# from spotipy.oauth2 import SpotifyClientCredentials
+# 
+# # Set up your Spotify credentials
+# client_id = '0074e2e862b943f19fd2ebdce5e147d9'
+# client_secret = '742c57785fae420ebeff136bfffe6553'
+# redirect_uri = 'http://localhost:8888/callback'
+# 
+# # Authenticate with Spotify
+# sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=client_id,
+#                                                client_secret=client_secret))
+#  
+# results = sp.current_user_saved_tracks()
+# 
+# 
+# devices = sp.devices()
+# print(devices)
+# #device_id = 'raspotify'
+# # Play a track
+# track_uri = 'spotify:track:4lY38A2Od1FpAA5ApsWJ9H'  # Replace TRACK_ID with the ID of the track you want to play
+# sp.start_playback(device_id=device_id, uris=[track_uri])
  
 
 #https://open.spotify.com/intl-de/track/4lY38A2Od1FpAA5ApsWJ9H?si=165640954d424001
@@ -482,11 +485,11 @@ def evaluateSteeringWheelLeftButton():
     
 def on_key_press(key):
     print(f"Key: {key}")
-    if key == Key.shift: # Start/Stop the Music player
+    if key == Key.media_play_pause: # Start/Stop the Music player
         evaluateBlueButton()
-    elif key == Key.page_up: # 
+    elif key == Key.media_next: # 
         evaluateSteeringWheelRightButton()
-    elif key == Key.page_down:
+    elif key == Key.media_previous:
         evaluateSteeringWheelLeftButton()
 
     
