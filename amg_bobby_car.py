@@ -21,6 +21,29 @@ from enum import Enum
 
 from pynput.keyboard import Key, Listener
 import threading
+
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+
+# Set up your Spotify credentials
+client_id = '0074e2e862b943f19fd2ebdce5e147d9'
+client_secret = '742c57785fae420ebeff136bfffe6553'
+redirect_uri = 'http://localhost:8888/callback'
+
+# Authenticate with Spotify
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
+                                               client_secret=client_secret,
+                                               redirect_uri=redirect_uri,
+                                               scope="user-modify-playback-state"))
+ 
+ 
+# Play a track
+track_uri = 'spotify:track:4lY38A2Od1FpAA5ApsWJ9H'  # Replace TRACK_ID with the ID of the track you want to play
+sp.start_playback(uris=[track_uri])
+ 
+
+#https://open.spotify.com/intl-de/track/4lY38A2Od1FpAA5ApsWJ9H?si=165640954d424001
+
  
 # Create and configure logger
 # TODO: think about creating one loggin file per day.
@@ -29,7 +52,8 @@ log_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 logging.basicConfig(filename="/home/pi/AMGBobbyCar/logs/log_file.log" + str(log_datetime),
                     format='%(asctime)s %(message)s',
                     filemode='w')
- 
+
+
 # Creating an object
 logger = logging.getLogger()
 # Setting the threshold of logger to DEBUG
