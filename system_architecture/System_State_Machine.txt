@@ -1,0 +1,19 @@
+@startuml
+[*] --> INIT
+INIT --> IDLE : Raspberry_Pi_Boot
+IDLE --> START_ENGINE : Ignition_Switch_To_On
+START_ENGINE --> IDLE : Ignition_Switch_To_Off
+START_ENGINE --> ENGINE_ON : Engine_Started
+ENGINE_ON --> IDLE : Ignition_Switch_To_Off
+IDLE --> MUSIC_PLAYER_ON : Music_Player_Button_Pressed
+
+ENGINE_ON --> MARTINSHORN_ON : Activate_Martinshorn
+MARTINSHORN_ON --> ENGINE_ON : Deactivate_Martinshorn
+
+ENGINE_ON --> POLICE_SIREN_ON : Activate_Police_Siren
+POLICE_SIREN_ON --> ENGINE_ON : Deactivate_Police_Siren
+
+ENGINE_ON --> MUSIC_PLAYER_ON : Music_Player_Button_Pressed
+MUSIC_PLAYER_ON --> ENGINE_ON : Music_Player_Button_Pressed
+MUSIC_PLAYER_ON --> IDLE : Ignition_Switch_To_Off
+@enduml
