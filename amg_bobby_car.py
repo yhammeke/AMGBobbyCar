@@ -472,7 +472,8 @@ def on_key_press(key):
 def on_key_release(key):
     if key == Key.enter: # Temporary solution, no need for now.
         print("Keyboard Key has been released")
-    
+
+# Key Listener is excluded into the dedicated Thread, so that the main loop will be not disturbed.
 try:
     listener_thread = threading.Thread(target=lambda: Listener(on_press=on_key_press, on_release=on_key_release).start())
     listener_thread.start()
@@ -513,90 +514,4 @@ while True:
                 startNextSong()
 
 ###########################################################
-                #BACKUP
-
-
-    ###################
-    # RED BUTTON LOGIC
-    ###################    
-#     if redButton.is_pressed:
-#         # Turn off the ignition (it doesn´t matter if it is On or Off)
-#         print("Test Trigger for RED Button")
-#         setIgnitionToOff()
-#         
-#         # Imcrement the Vehicle Mode (Switch the mode of the AMG Bobby Car)
-#         if AMGBobbyCarMode == 2:
-#             AMGBobbyCarMode = 1
-#         else:
-#             AMGBobbyCarMode = AMGBobbyCarMode + 1
-#         print("Red Button is pressed")
-#         
-#         if  AMGBobbyCarMode == 0:
-#             if led_rear.is_lit:
-#                 fadeOutTheLights()
-#             announceOFFMode()
-#         elif AMGBobbyCarMode == 1:
-#             if led_rear.is_lit:
-#                 fadeOutTheLights()
-#             announceMusicMode()
-#         elif AMGBobbyCarMode == 2:
-#             if led_rear.is_lit:
-#                 fadeOutTheLights()
-#             announceCarMode()
-#         else:
-#             print("Incorrect AMGBobbyCarMode")
-#         # Prevent too frequent mode switching
-#         sleep(1)
-
-# def announceOFFMode():
-#     print('Announce OFF Mode')
-#     try:
-#         pygame.mixer.music.load(os.path.join(soundsPath, "offmode_announce_1.mp3"))
-#     except Exception as Argument:
-#         logging.exception("Error occurred while loading mp3 file")
-#     pygame.mixer.music.set_volume(0.9)
-#     pygame.mixer.music.play()
-# 
-# def announceMusicMode():
-#     print('Announce Music Mode')
-#     try:
-#         pygame.mixer.music.load(os.path.join(soundsPath, "musicbox_announce_1.mp3"))
-#     except Exception as Argument:
-#         logging.exception("Error occurred while loading mp3 file")
-#     pygame.mixer.music.set_volume(0.9)
-#     pygame.mixer.music.play()
-# 
-# def announceCarMode():
-#     print('Announce Car Mode')
-#     try:
-#         pygame.mixer.music.load(os.path.join(soundsPath, "carmode_announce_1.mp3"))
-#     except Exception as Argument:
-#         logging.exception("Error occurred while loading mp3 file")
-#     pygame.mixer.music.set_volume(0.9)
-#     pygame.mixer.music.play()
-
-# def startRandomSong():
-#     global randomSong
-#     global previousSong
-#     # TODO: no song repetitions for at least 5 songs.
-#     # Select random song from the list
-#     randomSong = random.randrange(0,len(songs))
-#     previousSong = randomSong
-#     print('Random song number:', randomSong)
-#     print('Random song name:', songs[randomSong])
-#     # Load random song to the pygame mixer
-#     try:
-#         pygame.mixer.music.load(os.path.join(filepath, songs[randomSong]))
-#     except Exception as Argument:
-#         logging.exception("Error occurred while loading mp3 file")
-#     
-#     # Define the volume
-#     pygame.mixer.music.set_volume(0.9)
-#     
-#     # Play the song
-#     try:
-#         pygame.mixer.music.play()
-#     except Exception as Argument:
-#         logging.exception("Error occurred while starting the song")
-#     print("Music is now playing...")
-#     pygame.mixer.music.set_endevent(END_OF_SONG)
+#BACKUP
