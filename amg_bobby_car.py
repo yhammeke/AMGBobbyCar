@@ -22,31 +22,6 @@ from enum import Enum
 from pynput.keyboard import Key, Listener
 import threading
 
-# import spotipy
-# from spotipy.oauth2 import SpotifyClientCredentials
-# 
-# # Set up your Spotify credentials
-# client_id = '0074e2e862b943f19fd2ebdce5e147d9'
-# client_secret = '742c57785fae420ebeff136bfffe6553'
-# redirect_uri = 'http://localhost:8888/callback'
-# 
-# # Authenticate with Spotify
-# sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=client_id,
-#                                                client_secret=client_secret))
-#  
-# results = sp.current_user_saved_tracks()
-# 
-# 
-# devices = sp.devices()
-# print(devices)
-# #device_id = 'raspotify'
-# # Play a track
-# track_uri = 'spotify:track:4lY38A2Od1FpAA5ApsWJ9H'  # Replace TRACK_ID with the ID of the track you want to play
-# sp.start_playback(device_id=device_id, uris=[track_uri])
- 
-
-#https://open.spotify.com/intl-de/track/4lY38A2Od1FpAA5ApsWJ9H?si=165640954d424001
-
  
 # Create and configure logger
 # TODO: think about creating one loggin file per day.
@@ -99,7 +74,7 @@ def playEngineStartSound():
         pygame.mixer.music.load(os.path.join(soundsPath, "AMG-65_race.wav"))
         pygame.mixer.music.set_volume(0.7)
         pygame.mixer.music.play()
-        print("Engine started")
+        print("Engine is starting")
     except Exception as Argument:
         logging.exception("Error occurred while loading mp3 file")
 
@@ -278,14 +253,15 @@ def stopMusicPlayer():
     else:
         setVehicleLightsToOff()
     
-    # Fade out the Music Player Status LED
-    led_blue.blink(0,0,0,1)
-    sleep(1)
-    led_blue.off()
-    
+    if led_blue.is_lit:
+        # Fade out the Music Player Status LED
+        led_blue.blink(0,0,0,1)
+        sleep(1)
+        led_blue.off()
+    else:
+        led_blue.off()
     
     MusicPlayerState = 0
-    
     print("Music Player is OFF")
 
 def stopTheMusic():
