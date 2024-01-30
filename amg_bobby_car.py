@@ -19,10 +19,22 @@ import logging
 
 from enum import Enum
 
+# Package for the Keyboard Integration for the Remote Control
 from pynput.keyboard import Key, Listener
 import threading
 
- 
+# # Package for the rythm detection
+# import pyaudio
+# import numpy as np
+# 
+# # Set up beat detection
+# p = pyaudio.PyAudio()
+# stream = p.open(format=pyaudio.paInt16,
+#                 channels=1,
+#                 rate=44100,
+#                 input=True,
+#                 frames_per_buffer=1024)
+
 # Create and configure logger
 # TODO: think about creating one loggin file per day.
 current_datetime = datetime.now()
@@ -270,6 +282,14 @@ def stopTheMusic():
 
 # How to use the LED BLINK function:
 # led_x.blink(on_time=1, off_time=1, n=None, background=True)
+
+def detect_beat():
+    data = np.frombuffer(stream.read(1024), dtype=np.int16)
+    fft_result = np.fft.fft(data)
+    frequencies = np.fft.fftfreq(len(fft_result))
+    peak_frequency = frequencies[np.argmax(np.abs(fft_result))]
+    return peak_frequency
+
 
 ########################
 # INIT BEHAVIOR
